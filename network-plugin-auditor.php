@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://bonsaibudget.com/wordpress/network-plugin-auditor/
 Description: Add a column to your network admin to show which sites have each plugin active (on the plugin page), and which plugins are active on each site (on the sites page), and the active theme on each blog (on the themes page).
-Version: 1.2
+Version: 1.3
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
