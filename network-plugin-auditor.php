@@ -205,7 +205,7 @@ class NetworkPluginAuditor {
         // Fetch the list of blogs (from the transient cache if available)
         if ( false === ( $blog_list = get_transient( $this->optionprefix.'blog_list' ) ) ) {
 
-            $blog_list = $wpdb->get_results( $wpdb->prepare( "SELECT blog_id, domain FROM " . $wpdb->base_prefix . "blogs" ) );
+            $blog_list = $wpdb->get_results( "SELECT blog_id, domain FROM " . $wpdb->base_prefix . "blogs" );
 
             // Store for one hour
             set_transient( $this->optionprefix.'blog_list', $blog_list, 3600 );
@@ -279,9 +279,7 @@ class NetworkPluginAuditor {
 
         $blog_prefix = NetworkPluginAuditor::get_blog_prefix( $blog_id );
 
-        $query = "SELECT option_value FROM " . $blog_prefix . "options WHERE option_name = 'active_plugins'";
-
-        $active_plugins = $wpdb->get_var( $wpdb->prepare( $query ) );
+        $active_plugins = $wpdb->get_var( "SELECT option_value FROM " . $blog_prefix . "options WHERE option_name = 'active_plugins'" );
 
         return $active_plugins;
     }
@@ -351,8 +349,7 @@ class NetworkPluginAuditor {
 
         $blog_prefix = NetworkPluginAuditor::get_blog_prefix( $blog_id );
 
-        $query = "SELECT option_value FROM " . $blog_prefix . "options WHERE option_name = 'current_theme'";
-        $active_theme = $wpdb->get_var( $wpdb->prepare( $query ) );
+        $active_theme = $wpdb->get_var( "SELECT option_value FROM " . $blog_prefix . "options WHERE option_name = 'current_theme'" );
 
         return $active_theme;
     }
