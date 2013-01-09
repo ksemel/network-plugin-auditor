@@ -21,6 +21,10 @@ This plugin adds a column to your network admin to show which sites have each pl
 
 == Changelog ==
 
+= 1.3.2 =
+
+- Reduced transient name length to under 45 characters
+
 = 1.3.1 =
 
 - Fixed a bug where the primary blog would show all available themes as active even if they were not.
@@ -50,6 +54,10 @@ Bug fix: Check column_name before adding the output (Thanks to gabriel-reguly fo
 Initial release
 
 == Upgrade Notice ==
+
+= 1.3.2 =
+
+- Reduced transient name length to under 45 characters
 
 = 1.3.1 =
 

@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://bonsaibudget.com/wordpress/network-plugin-auditor/
 Description: Add a column to your network admin to show which sites have each plugin active (on the plugin page), and which plugins are active on each site (on the sites page), and the active theme on each blog (on the themes page).
-Version: 1.3.1
+Version: 1.3.2
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
@@ -12,7 +12,7 @@ Network: true
 class NetworkPluginAuditor {
 
     function NetworkPluginAuditor( ) {
-        $this->optionprefix = 'networkauditor_';
+        $this->optionprefix = 'auditor_';
 
         $this->use_transient = true;
 
@@ -236,13 +236,13 @@ class NetworkPluginAuditor {
 
         if ( isset($blog_list) && $blog_list != false ) {
             // Fetch the active theme (from the transient cache if available)
-            $transient_name = strstr($plugin_file, '/');
+            $transient_name = substr($plugin_file, 0, strpos($plugin_file, '/'));
             if ($transient_name == false) {
                 $transient_name = $plugin_file;
             }
             $transient_name = esc_sql($this->optionprefix.'plugin_'.$transient_name);
-            if (strlen($transient_name) >= 64) {
-                $transient_name = substr($transient_name, 0, 63);
+            if (strlen($transient_name) >= 45) {
+                $transient_name = substr($transient_name, 0, 44);
             }
 
             $active_on = get_transient( $transient_name );
@@ -318,13 +318,9 @@ class NetworkPluginAuditor {
         if ( isset($blog_list) && $blog_list != false ) {
 
             // Fetch the active theme (from the transient cache if available)
-            $transient_name = strstr($theme_key, '/');
-            if ($transient_name == false) {
-                $transient_name = $theme_key;
-            }
-            $transient_name = esc_sql($this->optionprefix.'theme_'.$transient_name);
-            if (strlen($transient_name) >= 64) {
-                $transient_name = substr($transient_name, 0, 63);
+            $transient_name = esc_sql($this->optionprefix.'theme_'.$theme_key);
+            if (strlen($transient_name) >= 45) {
+                $transient_name = substr($transient_name, 0, 44);
             }
 
             $active_on = get_transient( $transient_name );
