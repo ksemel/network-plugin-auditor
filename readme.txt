@@ -4,7 +4,7 @@ Donate Link: http://bonsaibudget.com/donate/
 Tags: network, multisite, plugin management, theme management, admin
 Requires at least: 3.2.1
 Tested up to: 3.5
-Stable tag: trunk
+Stable tag: 1.3.2
 
 For multisite/network installations only.  Adds columns to your network admin to show which sites are using each plugin and theme.
 
