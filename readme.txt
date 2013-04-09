@@ -3,8 +3,8 @@ Contributors: ksemel
 Donate Link: http://bonsaibudget.com/donate/
 Tags: network, multisite, plugin management, theme management, admin
 Requires at least: 3.2.1
-Tested up to: 3.5
-Stable tag: 1.3.2
+Tested up to: 3.6
+Stable tag: 1.4
 
 For multisite/network installations only.  Adds columns to your network admin to show which sites are using each plugin and theme.
 
@@ -12,7 +12,7 @@ For multisite/network installations only.  Adds columns to your network admin to
 
 As my wordpress network grew I found it challenging to track which plugins and themes were used on each site, and the only way to check was to visit each dashboard one at a time.  What a hassle!
 
-This plugin adds a column to your network admin to show which sites have each plugin active (on the plugin page), and which plugins are active on each site (on the sites page), and the active theme on each blog (on the themes page). Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
+This plugin adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
 
 == Installation ==
 
@@ -20,6 +20,11 @@ This plugin adds a column to your network admin to show which sites have each pl
 2. Network Activate the plugin through the 'Network Plugins' menu in WordPress
 
 == Changelog ==
+
+= 1.4 =
+
+- Added a theme column to the Sites page (User request from marikamitsos)
+- Wordpress 3.6 compatibility updates
 
 = 1.3.2 =
 
@@ -48,30 +53,6 @@ This plugin adds a column to your network admin to show which sites have each pl
 = 1.0.1 =
 
 Bug fix: Check column_name before adding the output (Thanks to gabriel-reguly for the catch!)
-
-= 1.0 =
-
-Initial release
-
-== Upgrade Notice ==
-
-= 1.3.2 =
-
-- Reduced transient name length to under 45 characters
-
-= 1.3.1 =
-
-- Fixed a bug where the primary blog would show all available themes as active even if they were not.
-- Fix over-long transient names in db fields
-
-= 1.3 =
-
-- Fixed Wordpress 3.5 compatibility issues
-
-= 1.2 =
-
-- Fixed an issue where the database prefixes were not determined correctly (Thank you montykaplan for your debugging log info!)
-- Added messaging for the case where the database prefix is blank (which isn't supported in multisite as of 3.3)
 
 = 1.0 =
 
