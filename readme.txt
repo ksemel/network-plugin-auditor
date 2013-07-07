@@ -1,7 +1,7 @@
-=== Plugin Name ===
+=== Network Plugin Auditor ===
 Contributors: ksemel
-Donate Link: http://bonsaibudget.com/donate/
 Tags: network, multisite, plugin management, theme management, admin
+Donate Link: http://bonsaibudget.com/donate/
 Requires at least: 3.2.1
 Tested up to: 3.6
 Stable tag: 1.5
