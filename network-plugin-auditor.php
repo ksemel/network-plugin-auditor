@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://bonsaibudget.com/wordpress/network-plugin-auditor/
 Description: Adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
-Version: 1.5.1
+Version: 1.5.2
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
@@ -15,7 +15,7 @@ class NetworkPluginAuditor {
 
     function NetworkPluginAuditor( ) {
         // check if we have previously cleaned the old transient data
-        $cleaned = get_site_transient( 'auditor_transients_cleaned' );
+        $cleaned = get_site_option( 'auditor_transients_cleaned' );
         if ( ! $cleaned ) {
             self::clean_old_transients();
         }
@@ -445,19 +445,15 @@ class NetworkPluginAuditor {
         $check_table_query = "SHOW TABLES LIKE '" . $wpdb->base_prefix . "options'";
         $check_table_result = $wpdb->get_results($check_table_query);
         if (($check_table_result === false && $check_table_result != 0) || ($wpdb->num_rows === 0)) {
-            // Store forever
-            set_site_transient( 'auditor_transients_cleaned', true, 0 );
-
-            // Skip this cleanup
-            continue;
+            // Don't try to remove
+        } else {
+            // Remove all the legacy style transients
+            $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name LIKE '_transient_auditor_%'" );
+            $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name LIKE '_transient_timeout_auditor_%'" );
         }
 
-        // Remove all the legacy style transients
-        $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name LIKE '_transient_auditor_%'" );
-        $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name LIKE '_transient_timeout_auditor_%'" );
-
         // Store forever
-        set_transient( 'auditor_transients_cleaned', true, 0 );
+        update_site_option( 'auditor_transients_cleaned', true, 0 );
 
         return;
     }
