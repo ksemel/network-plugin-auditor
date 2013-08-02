@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://bonsaibudget.com/wordpress/network-plugin-auditor/
 Description: Adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
-Version: 1.5
+Version: 1.5.1
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
@@ -15,7 +15,7 @@ class NetworkPluginAuditor {
 
     function NetworkPluginAuditor( ) {
         // check if we have previously cleaned the old transient data
-        $cleaned = get_transient( 'auditor_transients_cleaned' );
+        $cleaned = get_site_transient( 'auditor_transients_cleaned' );
         if ( ! $cleaned ) {
             self::clean_old_transients();
         }
@@ -231,7 +231,7 @@ class NetworkPluginAuditor {
         global $wpdb;
 
         // Fetch the list from the transient cache if available
-        $blog_list = get_transient( 'auditor_blog_list' );
+        $blog_list = get_site_transient( 'auditor_blog_list' );
         if ( self::use_transient !== true || $blog_list === false ) {
 
             $blog_list = $wpdb->get_results( "SELECT blog_id, domain FROM " . $wpdb->base_prefix . "blogs" );
@@ -251,7 +251,7 @@ class NetworkPluginAuditor {
 
         if ( isset($blog_list) && $blog_list != false ) {
             // Fetch the list from the transient cache if available
-            $auditor_active_plugins = get_transient( 'auditor_active_plugins' );
+            $auditor_active_plugins = get_site_transient( 'auditor_active_plugins' );
             if ( ! is_array($auditor_active_plugins) ) {
                 $auditor_active_plugins = array();
             }
@@ -273,7 +273,7 @@ class NetworkPluginAuditor {
                 $auditor_active_plugins[$transient_name] = $active_on;
 
                 // Store for one hour
-                set_transient( 'auditor_active_plugins', $auditor_active_plugins, 3600 );
+                set_site_transient( 'auditor_active_plugins', $auditor_active_plugins, 3600 );
 
                 return $active_on;
 
@@ -321,7 +321,7 @@ class NetworkPluginAuditor {
 
         if ( isset($blog_list) && $blog_list != false ) {
             // Fetch the list from the transient cache if available
-            $auditor_active_themes = get_transient( 'auditor_active_themes' );
+            $auditor_active_themes = get_site_transient( 'auditor_active_themes' );
             if ( ! is_array($auditor_active_themes) ) {
                 $auditor_active_themes = array();
             }
@@ -334,7 +334,7 @@ class NetworkPluginAuditor {
                 // Gather the list of blogs this theme is active on
                 foreach ( $blog_list as $blog ) {
                     // If the theme is active here then add it to the list
-                    if ( self::is_theme_active( $blog->blog_id, $theme_key ) ) {
+                    if ( self::is_theme_active( $blog->blog_id, $theme ) ) {
                         array_push( $active_on, $blog->blog_id );
                     }
                 }
@@ -343,7 +343,7 @@ class NetworkPluginAuditor {
                 $auditor_active_themes[$transient_name] = $active_on;
 
                 // Store for one hour
-                set_transient( 'auditor_active_themes', $auditor_active_themes, 3600 );
+                set_site_transient( 'auditor_active_themes', $auditor_active_themes, 3600 );
 
                 return $active_on;
 
@@ -414,26 +414,43 @@ class NetworkPluginAuditor {
 
     function clear_plugin_transient( $plugin, $network_deactivating ) {
         global $wpdb;
+        $blog_prefix = self::get_blog_prefix();
 
+        delete_site_transient('auditor_active_plugins'); 
+        
         // We do this directly with the db since the action is called by subblogs
-        $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name = '_transient_auditor_active_plugins'" );
-        $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name = '_transient_timeout_auditor_active_plugins'" );
+        //$wpdb->query( "DELETE FROM " . $blog_prefix . "options WHERE option_name = '_transient_auditor_active_plugins'" );
+        //$wpdb->query( "DELETE FROM " . $blog_prefix . "options WHERE option_name = '_transient_timeout_auditor_active_plugins'" );
 
         return;
     }
 
     function clear_theme_transient( $new_name, $new_theme ) {
         global $wpdb;
+        $blog_prefix = self::get_blog_prefix();
 
+        delete_site_transient('auditor_active_themes'); 
+        
         // We do this directly with the db since the action is called by subblogs
-        $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name = '_transient_auditor_active_themes'" );
-        $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name = '_transient_timeout_auditor_active_themes'" );
+        //$wpdb->query( "DELETE FROM " . $blog_prefix . "options WHERE option_name = '_transient_auditor_active_themes'" );
+        //$wpdb->query( "DELETE FROM " . $blog_prefix . "options WHERE option_name = '_transient_timeout_auditor_active_themes'" );
 
         return;
     }
 
     function clean_old_transients() {
         global $wpdb;
+
+        // Check that the db_prefix exists
+        $check_table_query = "SHOW TABLES LIKE '" . $wpdb->base_prefix . "options'";
+        $check_table_result = $wpdb->get_results($check_table_query);
+        if (($check_table_result === false && $check_table_result != 0) || ($wpdb->num_rows === 0)) {
+            // Store forever
+            set_site_transient( 'auditor_transients_cleaned', true, 0 );
+
+            // Skip this cleanup
+            continue;
+        }
 
         // Remove all the legacy style transients
         $wpdb->query( "DELETE FROM " . $wpdb->base_prefix . "options WHERE option_name LIKE '_transient_auditor_%'" );
