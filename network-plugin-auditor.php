@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://wordpress.org/support/plugin/network-plugin-auditor
 Description: Adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
-Version: 1.7
+Version: 1.8
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
@@ -264,12 +264,16 @@ class NetworkPluginAuditor {
         global $wpdb;
         $blog_list = array();
 
+        $args = array(
+            'limit'  => 10000 # use the wp_is_large_network upper limit
+        );
+
         if ( function_exists( 'wp_get_sites' ) && function_exists( 'wp_is_large_network' ) ) {
             // If wp_is_large_network() returns TRUE, wp_get_sites() will return an empty array.
-            // By default wp_is_large_network() returns TRUE if there are 10,000 or more sites in your network.
+            // By default wp_is_large_network() returns TRUE if there are 10,000 or more sites or users in your network.
             // This can be filtered using the wp_is_large_network filter.
-            if ( ! wp_is_large_network() ) {
-                $blog_list = wp_get_sites();
+            if ( ! wp_is_large_network( 'sites' ) ) {
+                $blog_list = wp_get_sites( $args );
             }
 
         } else {

@@ -3,14 +3,14 @@ Contributors: ksemel
 Tags: network, multisite, plugin management, theme management, admin
 Donate Link: http://bonsaibudget.com/donate/
 Requires at least: 3.2.1
-Tested up to: 3.8
-Stable tag: 1.7
+Tested up to: 3.8.1
+Stable tag: 1.8
 
 For multisite/network installations only.  Adds columns to your network admin to show which sites are using each plugin and theme.
 
 == Description ==
 
-As my wordpress network grew I found it challenging to track which plugins and themes were used on each site, and the only way to check was to visit each dashboard one at a time.  What a hassle!
+As my WordPress network grew I found it challenging to track which plugins and themes were used on each site, and the only way to check was to visit each dashboard one at a time.  What a hassle!
 
 This plugin adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
 
@@ -20,6 +20,10 @@ This plugin adds columns to your Network Admin on the Sites, Themes and Plugins 
 2. Network Activate the plugin through the 'Network Plugins' menu in WordPress
 
 == Changelog ==
+
+= 1.8 =
+
+Fixed limit on wp_get_sites() to support up to 10000 sites ( the default wp_is_large_network() limit ) ( Props to iclysdale )
 
 = 1.7 =
 
