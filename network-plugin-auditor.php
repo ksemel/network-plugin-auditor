@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://wordpress.org/support/plugin/network-plugin-auditor
 Description: Adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
-Version: 1.8
+Version: 1.8.1
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
@@ -244,7 +244,7 @@ class NetworkPluginAuditor {
     /* Helper Functions ***********************************************************/
 
     // Get the database prefix
-    function get_blog_prefix( $blog_id=null ) {
+    static function get_blog_prefix( $blog_id=null ) {
         global $wpdb;
 
         if ( null === $blog_id ) {
@@ -260,12 +260,12 @@ class NetworkPluginAuditor {
     }
 
     // Get the list of blogs
-    function get_network_blog_list( ) {
+    static function get_network_blog_list( ) {
         global $wpdb;
         $blog_list = array();
 
         $args = array(
-            'limit'  => 10000 # use the wp_is_large_network upper limit
+            'limit'  => 10000 // use the wp_is_large_network upper limit
         );
 
         if ( function_exists( 'wp_get_sites' ) && function_exists( 'wp_is_large_network' ) ) {
@@ -294,7 +294,7 @@ class NetworkPluginAuditor {
     /* Plugin Helpers */
 
     // Determine if the given plugin is active on a list of blogs
-    function is_plugin_active_on_blogs( $plugin_file ) {
+    static function is_plugin_active_on_blogs( $plugin_file ) {
         // Get the list of blogs
         $blog_list = self::get_network_blog_list( );
 
@@ -338,7 +338,7 @@ class NetworkPluginAuditor {
     }
 
     // Given a blog id and plugin path, determine if that plugin is active.
-    function is_plugin_active( $blog_id, $plugin_file ) {
+    static function is_plugin_active( $blog_id, $plugin_file ) {
         // Get the active plugins for this blog_id
         $plugins_active_here = self::get_active_plugins( $blog_id );
 
@@ -351,7 +351,7 @@ class NetworkPluginAuditor {
     }
 
     // Get the list of active plugins for a single blog
-    function get_active_plugins( $blog_id ) {
+    static function get_active_plugins( $blog_id ) {
         global $wpdb;
 
         $blog_prefix = self::get_blog_prefix( $blog_id );
@@ -364,7 +364,7 @@ class NetworkPluginAuditor {
     /* Theme Helpers */
 
     // Determine if the given theme is active on a list of blogs
-    function is_theme_active_on_blogs( $theme, $theme_key ) {
+    static function is_theme_active_on_blogs( $theme, $theme_key ) {
         // Get the list of blogs
         $blog_list = self::get_network_blog_list( );
 
@@ -406,7 +406,7 @@ class NetworkPluginAuditor {
     }
 
     // Given a blog id and theme object, determine if that theme is used on a this blog.
-    function is_theme_active( $blog_id, $theme_key ) {
+    static function is_theme_active( $blog_id, $theme_key ) {
         // Get the active theme for this blog_id
         $active_theme = self::get_active_theme( $blog_id );
 
@@ -419,7 +419,7 @@ class NetworkPluginAuditor {
     }
 
     // Get the active theme for a single blog
-    function get_active_theme( $blog_id ) {
+    static function get_active_theme( $blog_id ) {
         global $wpdb;
 
         $blog_prefix = self::get_blog_prefix( $blog_id );
@@ -430,7 +430,7 @@ class NetworkPluginAuditor {
     }
 
     // Get the active theme for a single blog
-    function get_active_theme_name( $blog_id ) {
+    static function get_active_theme_name( $blog_id ) {
         global $wpdb;
 
         $blog_prefix = self::get_blog_prefix( $blog_id );
@@ -445,7 +445,7 @@ class NetworkPluginAuditor {
                 $template = wp_get_theme( $template );
                 $stylesheet = wp_get_theme( $stylesheet );
 
-                $active_theme = $stylesheet['Name'] . ' (' . __( 'child of', 'npa') . ' ' .  $template['Name'] . ')';
+                $active_theme = $stylesheet['Name'] . ' (' . __( 'child of', 'npa' ) . ' ' .  $template['Name'] . ')';
 
             } else {
                 $active_theme = $wpdb->get_var( "SELECT option_value FROM " . $blog_prefix . "options WHERE option_name = 'current_theme'" );
@@ -459,7 +459,7 @@ class NetworkPluginAuditor {
         return $active_theme;
     }
 
-    function get_theme_link( $blog_id, $display='blog_name' ) {
+    static function get_theme_link( $blog_id, $display='blog_name' ) {
         $output = '';
 
         $blog_details = get_blog_details( $blog_id, true );
@@ -483,7 +483,7 @@ class NetworkPluginAuditor {
         return $output;
     }
 
-    function get_transient_friendly_name( $file_name ) {
+    static function get_transient_friendly_name( $file_name ) {
         $transient_name = substr( $file_name, 0, strpos( $file_name, '/' ) );
         if ( $transient_name == false ) {
             $transient_name = $file_name;
@@ -495,22 +495,16 @@ class NetworkPluginAuditor {
     }
 
     function clear_plugin_transient( $plugin, $network_deactivating ) {
-        global $wpdb;
-        $blog_prefix = self::get_blog_prefix();
-
         delete_site_transient( 'auditor_active_plugins' );
         return;
     }
 
     function clear_theme_transient( $new_name, $new_theme ) {
-        global $wpdb;
-        $blog_prefix = self::get_blog_prefix();
-
         delete_site_transient( 'auditor_active_themes' );
         return;
     }
 
-    function filter_by_value( $array, $index, $value ) {
+    static function filter_by_value( $array, $index, $value ) {
         $newarray = array();
         if ( is_array( $array ) && count( $array ) > 0 ) {
             foreach ( array_keys( $array ) as $key ) {
@@ -529,5 +523,3 @@ function initializeNetworkPluginAuditor() {
     $NetworkPluginAuditor = new NetworkPluginAuditor();
 }
 add_action( 'plugins_loaded', 'initializeNetworkPluginAuditor' );
-
-?>

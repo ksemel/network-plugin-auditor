@@ -4,7 +4,7 @@ Tags: network, multisite, plugin management, theme management, admin
 Donate Link: http://bonsaibudget.com/donate/
 Requires at least: 3.2.1
 Tested up to: 3.9.1
-Stable tag: 1.8
+Stable tag: 1.8.1
 
 For multisite/network installations only.  Adds columns to your network admin to show which sites are using each plugin and theme.
 
@@ -20,6 +20,11 @@ This plugin adds columns to your Network Admin on the Sites, Themes and Plugins 
 2. Network Activate the plugin through the 'Network Plugins' menu in WordPress
 
 == Changelog ==
+
+= 1.8.1 =
+
+Check out the mirror on github! https://github.com/ksemel/network-plugin-auditor
+Some cleanup when running PHP Strict
 
 = 1.8 =
 
@@ -97,6 +102,14 @@ Please update to version 1.2 for improved support for custom database prefixes.
 = Can I use this plugin as an Must-Use plugin? =
 
 Yes!  Just copy the network-plugin-auditor.php file to your mu-plugins folder.  Be aware that you will not receive automatic notices of updates if you choose to install the plugin this way.
+
+= I want to help! =
+
+Sure, head over to https://github.com/ksemel/network-plugin-auditor, fork the repo and send in a pull request!
+
+= I found a bug =
+
+And I want to know about it!  You can visit the Support Forum (http://wordpress.org/support/plugin/network-plugin-auditor) or open an issue in github (https://github.com/ksemel/network-plugin-auditor/issues)
 
 == Screenshots ==
 
