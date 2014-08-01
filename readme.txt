@@ -27,6 +27,11 @@ Added blog status to plugin listing
 Adjusted code for better i18n
 - Brazilian Portuguese translation now available, courtesy of Gabriel Reguly
 
+= 1.8.1 =
+
+Check out the mirror on github! https://github.com/ksemel/network-plugin-auditor
+Some cleanup when running PHP Strict
+
 = 1.8 =
 
 Fixed limit on wp_get_sites() to support up to 10000 sites ( the default wp_is_large_network() limit ) ( Props to iclysdale )
@@ -103,6 +108,14 @@ Please update to version 1.2 for improved support for custom database prefixes.
 = Can I use this plugin as an Must-Use plugin? =
 
 Yes!  Just copy the network-plugin-auditor.php file to your mu-plugins folder.  Be aware that you will not receive automatic notices of updates if you choose to install the plugin this way.
+
+= I want to help! =
+
+Sure, head over to https://github.com/ksemel/network-plugin-auditor, fork the repo and send in a pull request!
+
+= I found a bug =
+
+And I want to know about it!  You can visit the Support Forum (http://wordpress.org/support/plugin/network-plugin-auditor) or open an issue in github (https://github.com/ksemel/network-plugin-auditor/issues)
 
 == Screenshots ==
 

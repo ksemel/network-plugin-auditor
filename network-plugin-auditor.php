@@ -275,7 +275,7 @@ class NetworkPluginAuditor {
     /* Helper Functions ***********************************************************/
 
     // Get the database prefix
-    function get_blog_prefix( $blog_id=null ) {
+     static function get_blog_prefix( $blog_id=null ) {
         global $wpdb;
 
         if ( null === $blog_id ) {
@@ -291,12 +291,12 @@ class NetworkPluginAuditor {
     }
 
     // Get the list of blogs
-    function get_network_blog_list( ) {
+    static function get_network_blog_list( ) {
         global $wpdb;
         $blog_list = array();
 
         $args = array(
-            'limit'  => 10000 # use the wp_is_large_network upper limit
+            'limit'  => 10000 // use the wp_is_large_network upper limit
         );
 
         if ( function_exists( 'wp_get_sites' ) && function_exists( 'wp_is_large_network' ) ) {
@@ -325,7 +325,7 @@ class NetworkPluginAuditor {
     /* Plugin Helpers */
 
     // Determine if the given plugin is active on a list of blogs
-    function is_plugin_active_on_blogs( $plugin_file ) {
+    static function is_plugin_active_on_blogs( $plugin_file ) {
         // Get the list of blogs
         $blog_list = self::get_network_blog_list( );
 
@@ -369,7 +369,7 @@ class NetworkPluginAuditor {
     }
 
     // Given a blog id and plugin path, determine if that plugin is active.
-    function is_plugin_active( $blog_id, $plugin_file ) {
+    static function is_plugin_active( $blog_id, $plugin_file ) {
         // Get the active plugins for this blog_id
         $plugins_active_here = self::get_active_plugins( $blog_id );
 
@@ -382,7 +382,7 @@ class NetworkPluginAuditor {
     }
 
     // Get the list of active plugins for a single blog
-    function get_active_plugins( $blog_id ) {
+    static function get_active_plugins( $blog_id ) {
         global $wpdb;
 
         $blog_prefix = self::get_blog_prefix( $blog_id );
@@ -395,7 +395,7 @@ class NetworkPluginAuditor {
     /* Theme Helpers */
 
     // Determine if the given theme is active on a list of blogs
-    function is_theme_active_on_blogs( $theme, $theme_key ) {
+    static function is_theme_active_on_blogs( $theme, $theme_key ) {
         // Get the list of blogs
         $blog_list = self::get_network_blog_list( );
 
@@ -437,7 +437,7 @@ class NetworkPluginAuditor {
     }
 
     // Given a blog id and theme object, determine if that theme is used on a this blog.
-    function is_theme_active( $blog_id, $theme_key ) {
+    static function is_theme_active( $blog_id, $theme_key ) {
         // Get the active theme for this blog_id
         $active_theme = self::get_active_theme( $blog_id );
 
@@ -450,7 +450,7 @@ class NetworkPluginAuditor {
     }
 
     // Get the active theme for a single blog
-    function get_active_theme( $blog_id ) {
+    static function get_active_theme( $blog_id ) {
         global $wpdb;
 
         $blog_prefix = self::get_blog_prefix( $blog_id );
@@ -461,7 +461,7 @@ class NetworkPluginAuditor {
     }
 
     // Get the active theme for a single blog
-    function get_active_theme_name( $blog_id ) {
+    static function get_active_theme_name( $blog_id ) {
         global $wpdb;
 
         $blog_prefix = self::get_blog_prefix( $blog_id );
@@ -490,7 +490,7 @@ class NetworkPluginAuditor {
         return $active_theme;
     }
 
-    function get_theme_link( $blog_id, $display='blog_name' ) {
+    static function get_theme_link( $blog_id, $display='blog_name' ) {
         $output = '';
 
         $blog_details = get_blog_details( $blog_id, true );
@@ -514,7 +514,7 @@ class NetworkPluginAuditor {
         return $output;
     }
 
-    function get_transient_friendly_name( $file_name ) {
+    static function get_transient_friendly_name( $file_name ) {
         $transient_name = substr( $file_name, 0, strpos( $file_name, '/' ) );
         if ( $transient_name == false ) {
             $transient_name = $file_name;
@@ -541,7 +541,7 @@ class NetworkPluginAuditor {
         return;
     }
 
-    function filter_by_value( $array, $index, $value ) {
+    static function filter_by_value( $array, $index, $value ) {
         $newarray = array();
         if ( is_array( $array ) && count( $array ) > 0 ) {
             foreach ( array_keys( $array ) as $key ) {
@@ -560,5 +560,3 @@ function initializeNetworkPluginAuditor() {
     $NetworkPluginAuditor = new NetworkPluginAuditor();
 }
 add_action( 'plugins_loaded', 'initializeNetworkPluginAuditor' );
-
-?>
