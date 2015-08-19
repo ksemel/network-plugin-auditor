@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://wordpress.org/support/plugin/network-plugin-auditor
 Description: Adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
-Version: 1.9
+Version: 1.9.1
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
@@ -12,7 +12,7 @@ class NetworkPluginAuditor {
 
     const use_transient = false;
 
-    function NetworkPluginAuditor( ) {
+    function __construct( ) {
         global $wpdb;
         if ( ! is_string( $wpdb->base_prefix ) || '' === $wpdb->base_prefix ) {
             if ( is_network_admin() ) {
@@ -84,7 +84,7 @@ class NetworkPluginAuditor {
             // Is this plugin Active on any blogs in this network?
             $active_on_blogs = self::is_plugin_active_on_blogs( $plugin_file );
             if ( is_array( $active_on_blogs ) ) {
-			
+
                 $output = '<ul>';
 
                 // Loop through the blog list, gather details and append them to the output string
@@ -101,7 +101,7 @@ class NetworkPluginAuditor {
                         $blog_name  = $blog_details->blogname;
 						$blog_state = '';
 						$style      = '';
-						
+
 						if( $blog_details->archived || $blog_details->deleted ) {
 
 							$style =  'style="text-decoration: line-through;" ';
@@ -119,7 +119,7 @@ class NetworkPluginAuditor {
 									$blog_states[] = $col[1];
 								}
 							}
-								
+
 							$state_count = count( $blog_states );
 							$i = 0;
 							$blog_state .= ' - ';
@@ -127,9 +127,9 @@ class NetworkPluginAuditor {
 								++$i;
 								( $i == $state_count ) ? $sep = '' : $sep = ', ';
 								$blog_state .= '<span class="post-state">' . $state . $sep. '</span>';
-							}						
+							}
 						}
-						
+
 	                    $output .= '<li><nobr><a ' . $style . ' title="' . esc_attr( sprintf( __( 'Manage plugins on %s', 'npa' ), $blog_name  )) .'" href="'.esc_url( $blog_url ).'/wp-admin/plugins.php">' . esc_html( $blog_name ) . '</a>' . $blog_state . '</nobr></li>';
                     }
 
@@ -275,7 +275,7 @@ class NetworkPluginAuditor {
     /* Helper Functions ***********************************************************/
 
     // Get the database prefix
-     static function get_blog_prefix( $blog_id=null ) {
+    static function get_blog_prefix( $blog_id=null ) {
         global $wpdb;
 
         if ( null === $blog_id ) {
