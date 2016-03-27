@@ -298,6 +298,8 @@ class NetworkPluginAuditor {
         $args = array(
             'limit'  => 10000 // use the wp_is_large_network upper limit
         );
+        
+        $args = apply_filters( 'npa_get_network_blog_list_args', $args );
 
         if ( function_exists( 'wp_get_sites' ) && function_exists( 'wp_is_large_network' ) ) {
             // If wp_is_large_network() returns TRUE, wp_get_sites() will return an empty array.
