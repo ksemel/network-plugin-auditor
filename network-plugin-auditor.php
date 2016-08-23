@@ -3,7 +3,7 @@
 Plugin Name: Network Plugin Auditor
 Plugin URI: http://wordpress.org/support/plugin/network-plugin-auditor
 Description: Adds columns to your Network Admin on the Sites, Themes and Plugins pages to show which of your sites have each plugin and theme activated.  Now you can easily determine which plugins and themes are used on your network sites and which can be safely removed.
-Version: 1.9.1
+Version: 1.9.2
 Author: Katherine Semel
 Author URI: http://bonsaibudget.com/
 Network: true
@@ -317,6 +317,9 @@ class NetworkPluginAuditor {
                 set_transient( 'auditor_blog_list', $blog_list, 3600 );
             }
         }
+
+ 	// sort by domain name
+ 	uasort( $blog_list, function( $a, $b ) { return ( strcasecmp( $a['domain'], $b['domain'] ) ); } );
 
         //error_log( print_r( $blog_list, true ) );
         return $blog_list;
