@@ -128,7 +128,7 @@ class NetworkPluginAuditor {
 
 							$state_count = count( $blog_states );
 							$i           = 0;
-							$blog_state  .= ' - ';
+							$blog_state .= ' - ';
 							foreach ( $blog_states as $state ) {
 								++ $i;
 								( $i === $state_count ) ? $sep = '' : $sep = ', ';
@@ -136,7 +136,7 @@ class NetworkPluginAuditor {
 							}
 						}
 
-						$output .= '<li><nobr><a ' . $style . ' title="' . esc_attr( sprintf( __( 'Manage plugins on %s', 'network-plugin-auditor' ), $blog_name ) ) . '" href="' . esc_url( $blog_url ) . '/wp-admin/plugins.php">' . esc_html( $blog_name ) . '</a>' . $blog_state . '</nobr></li>';
+						$output .= '<li><nobr><a ' . $style . ' title="' . esc_attr( sprintf( __( 'Manage plugins on %s', 'network-plugin-auditor' ), $blog_name ) ) . '" href="' . esc_url( admin_url( 'plugins.php' ) ) . '">' . esc_html( $blog_name ) . '</a>' . esc_html( $blog_state ) . '</nobr></li>';
 					}
 
 					unset( $blog_details );
