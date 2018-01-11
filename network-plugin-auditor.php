@@ -96,9 +96,9 @@ class NetworkPluginAuditor {
 
                     $blog_details = get_blog_details( $blog_id, true );
 
-                    if ( isset( $blog_details->siteurl ) && isset( $blog_details->blogname ) ) {
+                    if ( isset( $blog_details->siteurl ) ) {
                         $blog_url   = $blog_details->siteurl;
-                        $blog_name  = $blog_details->blogname;
+                        $blog_name  = ! empty( $blog_details->blogname ) ? $blog_details->blogname : $blog_details->siteurl;
 						$blog_state = '';
 						$style      = '';
 
@@ -294,10 +294,10 @@ class NetworkPluginAuditor {
 
         if ( function_exists( 'get_sites' ) && function_exists( 'wp_is_large_network' ) ) {
             // number for get_sites(), uses the wp_is_large_network upper limit
-        	$args = apply_filters( 'npa_get_network_blog_list_args', array( 
-        	                                                               'number' => 10000 
+        	$args = apply_filters( 'npa_get_network_blog_list_args', array(
+        	                                                               'number' => 10000
         	                                                        	) );
-            
+
             // If wp_is_large_network() returns TRUE, get_sites() will return an empty array.
             // By default wp_is_large_network() returns TRUE if there are 10,000 or more sites in your network.
             // This can be filtered using the wp_is_large_network filter.
@@ -307,9 +307,9 @@ class NetworkPluginAuditor {
 
         } else if ( function_exists( 'wp_get_sites' ) && function_exists( 'wp_is_large_network' ) ) {
             // limit for wp_get_sites(), uses the wp_is_large_network upper limit
-        	$args = apply_filters( 'npa_get_network_blog_list_args', array( 
+        	$args = apply_filters( 'npa_get_network_blog_list_args', array(
         	                                                               'network_id' => null, // all networks
-        	                                                               'limit' => 10000 
+        	                                                               'limit' => 10000
         	                                                        	) );
 
             // If wp_is_large_network() returns TRUE, wp_get_sites() will return an empty array.
@@ -512,9 +512,9 @@ class NetworkPluginAuditor {
 
         $blog_details = get_blog_details( $blog_id, true );
 
-        if ( isset( $blog_details->siteurl ) && isset( $blog_details->blogname ) ) {
+        if ( isset( $blog_details->siteurl ) ) {
             $blog_url  = $blog_details->siteurl;
-            $blog_name = $blog_details->blogname;
+            $blog_name = ! empty( $blog_details->blogname ) ? $blog_details->blogname : $blog_details->siteurl;
             $blog_state = '';
             $style      = '';
 
